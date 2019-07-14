@@ -8,7 +8,8 @@ const app = express();
 const logger = log4js.getLogger();
 const config = require('../config/config.js');
 
-const demoRouter = require('./routers/BookRouter');
+const bookRouter = require('./routers/BookRouter');
+const userRouter = require('./routers/UserRouter');
 
 // Configure log4j
 log4js.configure({
@@ -51,8 +52,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/../build')));
 
 // Configure controller router
-app.use('/book', demoRouter);  // Express Middleware
-
+app.use('/book',bookRouter);  // Express Middleware
+app.use('/user',userRouter);
 // Send resource
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/../build', 'index.html'));

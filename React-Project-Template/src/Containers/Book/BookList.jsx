@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { } from 'antd';
-import { Table, Divider, Tag, Button, Input } from 'antd';
-import Style from './index.css'
+import { Table, Divider, Tag, Button, Input, Form } from 'antd';
+import { Drawer, Col, Row, Select, DatePicker, Icon } from 'antd';
+import Style from './index.css';
+//import Mybutton from './MyDrawer.jsx';
 const axios = require('axios');
 
 const { Search } = Input;
@@ -16,6 +18,134 @@ const deleteBook = (bookId) => {
         });
     })
 };
+
+
+
+const { Option } = Select;
+class DrawerForm extends React.Component {
+    state = { visible: false };
+
+    showDrawer = () => {
+        this.setState({
+            visible: true,
+        });
+    };
+
+    onClose = () => {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    render() {
+        const { getFieldDecorator } = this.props.form;
+        return (
+            <div>
+                <Button type="primary" onClick={this.showDrawer}>编辑</Button>
+                <Button type="dashed" onClick={this.showDrawer}>详情</Button>
+                <Button type="danger" >删除</Button>
+                <Drawer
+                    title="编辑"
+                    width={720}
+                    onClose={this.onClose}
+                    visible={this.state.visible}
+                >
+                    <Form layout="vertical" hideRequiredMark>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item label="图书id">
+                                    {getFieldDecorator('book_id', {
+                                        rules: [{ required: true, message: 'Please enter user name' }],
+                                    })(<Input placeholder="请输入图书id" />)}
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="书名">
+                                    {getFieldDecorator('book_name', {
+                                        rules: [{ required: true, message: 'Please enter user name' }],
+                                    })(<Input placeholder="请输入书名" />)}
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item label="ISBN">
+                                    {getFieldDecorator('book_isbn', {
+                                        rules: [{ required: true, message: 'Please enter user name' }],
+                                    })(<Input placeholder="请输入图书ISBN" />)}
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="作者">
+                                    {getFieldDecorator('book_author', {
+                                        rules: [{ required: true, message: 'Please enter user name' }],
+                                    })(<Input placeholder="请输入图书作者" />)}
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item label="状态">
+                                    {getFieldDecorator('book_status', {
+                                        rules: [{ required: true, message: 'Please enter user name' }],
+                                    })(<Input placeholder="请输入图书状态" />)}
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={12}>
+                                <Form.Item label="日期">
+                                    {getFieldDecorator('dateTime', {
+                                        rules: [{ required: true, message: 'Please choose the dateTime' }],
+                                    })(
+                                        <DatePicker.RangePicker
+                                            style={{ width: '100%' }}
+                                            getPopupContainer={trigger => trigger.parentNode}
+                                        />,
+                                    )}
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Form.Item label="说明">
+                                    {getFieldDecorator('description', {
+                                        rules: [
+                                            {
+                                                required: true,
+                                                message: '请输入说明',
+                                            },
+                                        ],
+                                    })(<Input.TextArea rows={4} placeholder="请输入图书说明" />)}
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Form>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            left: 0,
+                            bottom: 0,
+                            width: '100%',
+                            borderTop: '1px solid #e9e9e9',
+                            padding: '10px 16px',
+                            background: '#fff',
+                            textAlign: 'right',
+                        }}
+                    >
+                        <Button onClick={this.onClose} type="primary">提交 </Button>
+                        <Button onClick={this.onClose} style={{ marginRight: 8 }}>取消</Button>
+                        
+                    </div>
+                </Drawer>
+            </div>
+        );
+    }
+}
+
+const App = Form.create()(DrawerForm);
+
+//ReactDOM.render(<App/>, mountNode);
 
 const columns = [
     {
@@ -39,15 +169,27 @@ const columns = [
         title: '图书状态',
         dataIndex: 'bookStatus',
         key: 'bookStatus',
+        render: (text, record) => {
+            const state = {
+                color: record.bookStatus == 0 ? "green" : "red",
+                status: record.bookStatus == 0 ? "未借" : "已借",
+            }
+
+            return (
+                <div>
+                    <Tag color={state.color}>{state.status}</Tag>
+                </div>
+            )
+        },
     },
+
     {
         title: '操作',
         key: 'action',
         render: (text, record) => (
             <div>
-                <Button type="primary">编辑</Button>
-                <Button type="dashed" >详情</Button>
-                <Button type="danger" >删除</Button>
+                <App />
+
             </div>
         ),
     },
@@ -61,13 +203,9 @@ class index extends Component {
     state = {
         data: 0
     }
-
-
-
-
     componentDidMount() {
         axios.get('http://localhost:3005/book/list').then((data) => {
-            console.log(data.data);
+            // console.log(data.data);
             this.setState({
                 data: data.data
             });
@@ -78,7 +216,7 @@ class index extends Component {
         return (
             <div>
                 <div className="search">
-                    <Search placeholder="input search text" onSearch={value => console.log(value)} enterButton />
+                    <Search placeholder="请输入图书名称" onSearch={value => console.log(value)} enterButton />
                 </div>
                 <div><Table columns={columns} dataSource={this.state.data} /></div>
             </div>
