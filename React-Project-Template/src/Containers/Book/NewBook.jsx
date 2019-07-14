@@ -81,10 +81,10 @@ class RegistrationForm extends React.Component {
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item label="书名">
-          {getFieldDecorator('email', {
+          {getFieldDecorator('book_name', {
             rules: [
               {
-                type: 'name',
+                type: 'book_name',
                 message: '书名不能为空！',
               },
               {
@@ -95,10 +95,10 @@ class RegistrationForm extends React.Component {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="作者">
-          {getFieldDecorator('email', {
+          {getFieldDecorator('book_author', {
             rules: [
               {
-                type: 'email',
+                type: 'book_author',
                 message: 'The input is not valid E-mail!',
               },
               {
@@ -108,11 +108,11 @@ class RegistrationForm extends React.Component {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="ISDN">
-          {getFieldDecorator('email', {
+        <Form.Item label="ISBN">
+          {getFieldDecorator('book_isbn', {
             rules: [
               {
-                type: 'email',
+                type: 'book_isbn',
                 message: 'The input is not valid E-mail!',
               },
               {
@@ -123,10 +123,10 @@ class RegistrationForm extends React.Component {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="状态">
-          {getFieldDecorator('email', {
+          {getFieldDecorator('book_status', {
             rules: [
               {
-                type: 'state',
+                type: 'book_status',
                 message: 'state',
               },
               {

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Drawer, Form, Button, Col, Row, Input, Select, DatePicker, Icon } from 'antd';
 
 const { Option } = Select;
-
-export default class DrawerForm extends Component {
+ class DrawerForm extends React.Component {
   state = { visible: false };
 
   showDrawer = () => {
@@ -147,6 +146,6 @@ export default class DrawerForm extends Component {
   }
 }
 
-//const App = Form.create()(DrawerForm);
+const App = Form.create()(DrawerForm);
 
- //ReactDOM.render(<App/>, mountNode);
+ ReactDOM.render(<App/>, mountNode);
