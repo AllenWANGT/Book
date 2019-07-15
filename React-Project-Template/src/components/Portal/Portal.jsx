@@ -6,7 +6,6 @@ import BookList from '../../Containers/Book/BookList';
 import NewBook from '../../Containers/Book/NewBook';
 import BorrowBook from '../../Containers/Book/BorrowBook';
 import signin from '../../Containers/signin/signin';
-import Style from './index.module.scss';
 import { Layout, Menu, Dropdown, Icon } from 'antd';
 import  mainPage  from './Portal2';
 import createBrowserHistory from 'history'

@@ -16,6 +16,8 @@ const deleteBook = (bookId) => {
     }).then(() => {
         //this.props.history.push('/book')
         alert("删除成功")
+    }).catch(() => {
+        alert('删除失败')
     })
 };
 

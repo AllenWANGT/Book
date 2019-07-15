@@ -18,6 +18,9 @@ router.get('/list', (request, response) => {
 router.get('/delete',(request, response)=>{
     const params = request.query;
     axios.get('http://localhost:8080/deleteBookById',{params}).then(()=>{
+        response.send();
+    }).catch(() =>{
+        response.send();
     })
 });
 
@@ -25,8 +28,10 @@ router.get('/delete',(request, response)=>{
 router.post('/addBook',(request, response)=>{
     const params = request.body;
     console.log(params);
-    axios.post('http://localhost:8080/addBook',params).then((data)=>{
-            response.send(data.data);
+    axios.post('http://localhost:8080/addBook',params).then(()=>{
+            response.send();
+    }).catch(() => {
+        response.send();
     })
     });
 // router.post('/update',(request, response)=>{

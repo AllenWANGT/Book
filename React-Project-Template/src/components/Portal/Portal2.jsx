@@ -8,6 +8,7 @@ import BorrowBook from '../../Containers/Book/BorrowBook';
 import signin from '../../Containers/signin/signin';
 import Style from './index.module.scss';
 import { Layout, Menu, Dropdown, Icon } from 'antd';
+import createBrowserHistory from 'history'
 
 const { Header, Content } = Layout;
 
@@ -16,7 +17,7 @@ const { Header, Content } = Layout;
 export default class Portal extends Component {
     render() {
         return (
-            <Router>
+            <Router history={createBrowserHistory}>
                 <div className={Style.portalRoot}>
                     <div className={Style.topHead}>
                         <Layout >
@@ -39,7 +40,7 @@ export default class Portal extends Component {
                             </Header>
                             <Content style={{ padding: '0 50px' }}>
                                 <Switch>
-                                    
+                                    <Redirect exact from="/" to="/book" />
                                     <Route exact path="/book" component={BookList} />
                                     <Route exact path="/book/new" component={NewBook} />
                                     <Route exact path="/student" component={UserForm} />
@@ -57,6 +58,7 @@ export default class Portal extends Component {
         )
     }
 }
+
 
 
 

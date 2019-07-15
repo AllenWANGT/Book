@@ -25,10 +25,11 @@ class RegistrationForm extends React.Component {
         console.log('Received values of form: ', values);
         
         axios.post('http://localhost:3005/book/addBook',values).then(() => {
-        console.log(0);
+        //console.log(0);
         alert('插入成功');
+        this.props.history.push('/book')
     }).catch(() => {
-      console.log(1);
+      //console.log(1);
       alert('插入失败');
     })
       }
@@ -176,7 +177,7 @@ class Index extends Component {
   render() {
     return (
       <div>
-        <div><WrappedRegistrationForm></WrappedRegistrationForm></div>
+        <div><WrappedRegistrationForm history={this.props.history}></WrappedRegistrationForm></div>
       </div>
     )
   }
