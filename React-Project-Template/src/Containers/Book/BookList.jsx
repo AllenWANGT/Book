@@ -9,13 +9,13 @@ const axios = require('axios');
 const { Search } = Input;
 
 const deleteBook = (bookId) => {
-    axios.get('http://localhost:3005/book/delete?bookId=' + bookId).then(() => {
-        axios.get('http://localhost:3005/book/list').then((data) => {
-            console.log(data.data);
-            this.setState({
-                data: data.data,
-            });
-        });
+    axios.get('http://localhost:3005/book/delete', {
+        params: {
+            bookId: bookId
+        }
+    }).then(() => {
+        //this.props.history.push('/book')
+        alert("删除成功")
     })
 };
 
@@ -43,7 +43,7 @@ class DrawerForm extends React.Component {
             <div>
                 <Button type="primary" onClick={this.showDrawer}>编辑</Button>
                 <Button type="dashed" onClick={this.showDrawer}>详情</Button>
-                <Button type="danger" >删除</Button>
+                <Button type="danger" onClick={deleteBook.bind(this,this.props.bookId)}>删除</Button>
                 <Drawer
                     title="编辑"
                     width={720}
@@ -54,14 +54,14 @@ class DrawerForm extends React.Component {
                         <Row gutter={16}>
                             <Col span={12}>
                                 <Form.Item label="图书id">
-                                    {getFieldDecorator('book_id', {
+                                    {getFieldDecorator('bookId', {
                                         rules: [{ required: true, message: 'Please enter user name' }],
                                     })(<Input placeholder="请输入图书id" />)}
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item label="书名">
-                                    {getFieldDecorator('book_name', {
+                                    {getFieldDecorator('bookName', {
                                         rules: [{ required: true, message: 'Please enter user name' }],
                                     })(<Input placeholder="请输入书名" />)}
                                 </Form.Item>
@@ -70,14 +70,14 @@ class DrawerForm extends React.Component {
                         <Row gutter={16}>
                             <Col span={12}>
                                 <Form.Item label="ISBN">
-                                    {getFieldDecorator('book_isbn', {
+                                    {getFieldDecorator('bookIsbn', {
                                         rules: [{ required: true, message: 'Please enter user name' }],
                                     })(<Input placeholder="请输入图书ISBN" />)}
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item label="作者">
-                                    {getFieldDecorator('book_author', {
+                                    {getFieldDecorator('bookAuthor', {
                                         rules: [{ required: true, message: 'Please enter user name' }],
                                     })(<Input placeholder="请输入图书作者" />)}
                                 </Form.Item>
@@ -87,7 +87,7 @@ class DrawerForm extends React.Component {
                         <Row gutter={16}>
                             <Col span={12}>
                                 <Form.Item label="状态">
-                                    {getFieldDecorator('book_status', {
+                                    {getFieldDecorator('bookStatus', {
                                         rules: [{ required: true, message: 'Please enter user name' }],
                                     })(<Input placeholder="请输入图书状态" />)}
                                 </Form.Item>
@@ -135,7 +135,7 @@ class DrawerForm extends React.Component {
                     >
                         <Button onClick={this.onClose} type="primary">提交 </Button>
                         <Button onClick={this.onClose} style={{ marginRight: 8 }}>取消</Button>
-                        
+
                     </div>
                 </Drawer>
             </div>
@@ -174,7 +174,6 @@ const columns = [
                 color: record.bookStatus == 0 ? "green" : "red",
                 status: record.bookStatus == 0 ? "未借" : "已借",
             }
-
             return (
                 <div>
                     <Tag color={state.color}>{state.status}</Tag>
@@ -188,13 +187,11 @@ const columns = [
         key: 'action',
         render: (text, record) => (
             <div>
-                <App />
+                <App bookId={record.bookId}/>
 
             </div>
         ),
     },
-
-
 ];
 
 
@@ -212,11 +209,26 @@ class index extends Component {
         })
     }
 
+    getBooks = (value) => {
+        //console.log(value);
+        axios.get('http://localhost:3005/book/list', {
+            params: {
+                bookName: value,
+            }
+        }).then((data) => {
+            //console.log(data.data);
+            this.setState({
+                data: data.data
+            });
+        })
+    }
+
+
     render() {
         return (
             <div>
                 <div className="search">
-                    <Search placeholder="请输入图书名称" onSearch={value => console.log(value)} enterButton />
+                    <Search placeholder="请输入图书名称" onSearch={value => this.getBooks(value)} enterButton />
                 </div>
                 <div><Table columns={columns} dataSource={this.state.data} /></div>
             </div>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import style from "./signin.css";
+
+const axios = require('axios');
 class NormalLoginForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
@@ -10,6 +12,10 @@ class NormalLoginForm extends React.Component {
             }
         });
     };
+    
+    toAdmin= () =>{
+       this.props.history.push("/admin");
+    }
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -44,7 +50,7 @@ class NormalLoginForm extends React.Component {
                     <a className="login-form-forgot" href="">
                         忘记密码
             </a>
-                    <div><Button type="primary" htmlType="submit" className="login-form-button">登录</Button></div>
+                    <div><Button type="primary" htmlType="submit" className="login-form-button" onClick={this.toAdmin}>登录</Button></div>
                     <a href="">没有账号，现在就去注册...</a>
                 </Form.Item>
             </Form>
@@ -57,7 +63,7 @@ class Index extends Component {
 
     render() {
         return (
-            <div><WrappedNormalLoginForm></WrappedNormalLoginForm>
+            <div><WrappedNormalLoginForm history={this.props.history}></WrappedNormalLoginForm>
             </div>
         )
     }

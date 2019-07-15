@@ -6,21 +6,34 @@ const axios = require('axios');
 // const logger = log4js.getLogger();
 
 router.get('/list', (request, response) => {
+    const params=request.query;
+
     // Access BE
-    axios.get('http://localhost:8080/getBooks').then((data) => {
+    axios.get('http://localhost:8080/getBooks',{params}).then((data) => {
         response.send(data.data);
     })
 });
 
 
-router.delete('/delete',(request, response)=>{
-    axios.delete('http://localhost:8080/deleteBookById?bookId='+4).then(()=>{
-
+router.get('/delete',(request, response)=>{
+    const params = request.query;
+    axios.get('http://localhost:8080/deleteBookById',{params}).then(()=>{
     })
-}
+});
 
-);
 
+router.post('/addBook',(request, response)=>{
+    const params = request.body;
+    console.log(params);
+    axios.post('http://localhost:8080/addBook',params).then((data)=>{
+            response.send(data.data);
+    })
+    });
+// router.post('/update',(request, response)=>{
+//     axios.post('http://localhost:3000/book/new').then(()=>{
+//     })
+// }
+// );
 
 
 module.exports = router;

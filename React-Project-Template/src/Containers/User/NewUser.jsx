@@ -80,11 +80,11 @@ class RegistrationForm extends React.Component {
 
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-        <Form.Item label="书名">
-          {getFieldDecorator('email', {
+        <Form.Item label="用户名">
+          {getFieldDecorator('user_name', {
             rules: [
               {
-                type: 'name',
+                type: 'user_name',
                 message: '书名不能为空！',
               },
               {
@@ -94,11 +94,11 @@ class RegistrationForm extends React.Component {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="作者">
-          {getFieldDecorator('email', {
+        <Form.Item label="性别">
+          {getFieldDecorator('user_sex', {
             rules: [
               {
-                type: 'email',
+                type: 'user_sex',
                 message: 'The input is not valid E-mail!',
               },
               {
@@ -108,11 +108,11 @@ class RegistrationForm extends React.Component {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="ISDN">
-          {getFieldDecorator('email', {
+        <Form.Item label="年龄">
+          {getFieldDecorator('user_age', {
             rules: [
               {
-                type: 'email',
+                type: 'user_age',
                 message: 'The input is not valid E-mail!',
               },
               {
@@ -122,11 +122,11 @@ class RegistrationForm extends React.Component {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="状态">
-          {getFieldDecorator('email', {
+        <Form.Item label="地址">
+          {getFieldDecorator('user_address', {
             rules: [
               {
-                type: 'state',
+                type: 'user_address',
                 message: 'state',
               },
               {
@@ -136,7 +136,33 @@ class RegistrationForm extends React.Component {
             ],
           })(<Input />)}
         </Form.Item>
-
+        <Form.Item label="手机号">
+          {getFieldDecorator('user_phone', {
+            rules: [
+              {
+                type: 'user_phone',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },
+            ],
+          })(<Input />)}
+        </Form.Item><Form.Item label="密码">
+          {getFieldDecorator('user_password', {
+            rules: [
+              {
+                type: 'user_password',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },
+            ],
+          })(<Input />)}
+        </Form.Item>
 
 
 

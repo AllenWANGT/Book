@@ -8,6 +8,7 @@ router.get('/list', (request, response) => {
         response.send(data.data);
         //console.log(data.data);
 
+
     })
 });
 

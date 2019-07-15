@@ -6,7 +6,7 @@ import {
   Button,
   AutoComplete,
 } from 'antd';
-
+const { TextArea } = Input;
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
 const axios = require('axios');
@@ -23,9 +23,33 @@ class RegistrationForm extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        
+        axios.post('http://localhost:3005/book/addBook',values).then(() => {
+        console.log(0);
+        alert('插入成功');
+    }).catch(() => {
+      console.log(1);
+      alert('插入失败');
+    })
       }
     });
   };
+  // getBooks = (value) => {
+  //   //console.log(value);
+  //   axios.get('http://localhost:3005/book/new', {
+  //     params: {
+  //       book_author: value.book_author,
+  //       book_isbn: value.book_isbn,
+  //       book_name: value.book_name,
+  //       book_status: value.book_status,
+  //     }
+  //   }).then((data) => {
+  //     //console.log(data.data);
+  //     this.setState({
+  //       data: data.data
+  //     });
+  //   })
+  // };
 
   handleConfirmBlur = e => {
     const { value } = e.target;
@@ -81,12 +105,9 @@ class RegistrationForm extends React.Component {
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item label="书名">
-          {getFieldDecorator('book_name', {
+          {getFieldDecorator('bookName', {
             rules: [
-              {
-                type: 'book_name',
-                message: '书名不能为空！',
-              },
+
               {
                 required: true,
                 message: '书名不能为空！',
@@ -95,12 +116,9 @@ class RegistrationForm extends React.Component {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="作者">
-          {getFieldDecorator('book_author', {
+          {getFieldDecorator('bookAuthor', {
             rules: [
-              {
-                type: 'book_author',
-                message: 'The input is not valid E-mail!',
-              },
+
               {
                 required: true,
                 message: 'Please input your E-mail!',
@@ -109,12 +127,9 @@ class RegistrationForm extends React.Component {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="ISBN">
-          {getFieldDecorator('book_isbn', {
+          {getFieldDecorator('bookIsbn', {
             rules: [
-              {
-                type: 'book_isbn',
-                message: 'The input is not valid E-mail!',
-              },
+
               {
                 required: true,
                 message: 'Please input your E-mail!',
@@ -122,30 +137,36 @@ class RegistrationForm extends React.Component {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="状态">
-          {getFieldDecorator('book_status', {
+        <Form.Item label="出版社">
+          {getFieldDecorator('bookPublisher', {
             rules: [
-              {
-                type: 'book_status',
-                message: 'state',
-              },
+
               {
                 required: true,
-                message: 'Please input your state',
+                message: 'Please input your E-mail!',
+              },
+            ],
+          })(<Input />)}
+        </Form.Item><Form.Item label="图书概要">
+          {getFieldDecorator('bookInfo', {
+            rules: [
+
+              {
+                required: true,
+                message: 'Please input your E-mail!',
               },
             ],
           })(<Input />)}
         </Form.Item>
-
-
+        
 
 
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">提交</Button>
+          <Button type="primary" htmlType="submit" >提交</Button>
           <Button htmlType="cancel" onClick={this.cancel}>取消 </Button>
-          </Form.Item>
-        </Form >
-      );
+        </Form.Item>
+      </Form >
+    );
   }
 }
 
