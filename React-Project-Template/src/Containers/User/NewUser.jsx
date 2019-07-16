@@ -111,7 +111,7 @@ class RegistrationForm extends React.Component {
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
+      callback('两次密码不一致!');
     } else {
       callback();
     }
@@ -219,6 +219,16 @@ class RegistrationForm extends React.Component {
               {
                 required: true,
                 message: '请输入姓名!',
+              },
+            ],
+          })(<Input ></Input>)}
+        </Form.Item>
+        <Form.Item label="年龄">
+          {getFieldDecorator('age', {
+            rules: [
+              {
+                required: true,
+                message: '请输入年龄!',
               },
             ],
           })(<Input ></Input>)}
