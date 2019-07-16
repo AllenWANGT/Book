@@ -27,17 +27,24 @@ const changeHistory = (history1) => {
 
 const { Option } = Select;
 class DrawerForm extends React.Component {
-    state = { visible: false };
+    state = { 
+        visible: false ,
+        book:this.props.book,
+        submit:"提交",
+        bookstate:"未借"
+    };
 
     showDrawer = () => {
         this.setState({
             visible: true,
+            submit:"确认"
         });
     };
 
     onClose = () => {
         this.setState({
             visible: false,
+            submit:"提交"
         });
     };
      
@@ -50,7 +57,7 @@ class DrawerForm extends React.Component {
                 <Button type="dashed" onClick={this.showDrawer}>详情</Button>
                 <Button type="danger" onClick={deleteBook.bind(this, this.props.bookId)}>删除</Button>
                 <Drawer
-                    title="编辑"
+                    title="图书详情"
                     width={720}
                     onClose={this.onClose}
                     visible={this.state.visible}
@@ -60,6 +67,7 @@ class DrawerForm extends React.Component {
                             <Col span={12}>
                                 <Form.Item label="图书id">
                                     {getFieldDecorator('bookId', {
+                                        initialValue:this.state.book.bookId,
                                         rules: [{ required: true, message: '请输入图书id' }],
                                     })(<Input  placeholder="请输入图书id" ></Input>)}
                                 </Form.Item>
@@ -67,6 +75,7 @@ class DrawerForm extends React.Component {
                             <Col span={12}>
                                 <Form.Item label="书名">
                                     {getFieldDecorator('bookName', {
+                                        initialValue:this.state.book.bookName,
                                         rules: [{ required: true, message: 'Please enter user name' }],
                                     })(<Input placeholder="请输入书名" />)}
                                 </Form.Item>
@@ -76,13 +85,15 @@ class DrawerForm extends React.Component {
                             <Col span={12}>
                                 <Form.Item label="ISBN">
                                     {getFieldDecorator('bookIsbn', {
+                                        initialValue:this.state.book.bookIsbn,
                                         rules: [{ required: true, message: 'Please enter user name' }],
-                                    })(<Input placeholder="请输入图书ISBN" />)}
+                                    })(<Input placeholder="请输入图书ISBN"  />)}
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item label="作者">
                                     {getFieldDecorator('bookAuthor', {
+                                        initialValue:this.state.book.bookAuthor,
                                         rules: [{ required: true, message: 'Please enter user name' }],
                                     })(<Input placeholder="请输入图书作者" />)}
                                 </Form.Item>
@@ -93,6 +104,7 @@ class DrawerForm extends React.Component {
                             <Col span={12}>
                                 <Form.Item label="状态">
                                     {getFieldDecorator('bookStatus', {
+                                         //initialValue:
                                         rules: [{ required: true, message: 'Please enter user name' }],
                                     })(<Input placeholder="请输入图书状态" />)}
                                 </Form.Item>
@@ -101,20 +113,19 @@ class DrawerForm extends React.Component {
                             <Col span={12}>
                                 <Form.Item label="日期">
                                     {getFieldDecorator('dateTime', {
+                                        initialValue:this.state.book.bookCreateTime,
                                         rules: [{ required: true, message: 'Please choose the dateTime' }],
-                                    })(
-                                        <DatePicker.RangePicker
-                                            style={{ width: '100%' }}
-                                            getPopupContainer={trigger => trigger.parentNode}
-                                        />,
+                                    })(<Input placeholder="" disabled={true}/>
+                                        
                                     )}
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row gutter={16}>
                             <Col span={24}>
-                                <Form.Item label="说明">
-                                    {getFieldDecorator('description', {
+                                <Form.Item label="图书概要">
+                                    {getFieldDecorator('bookInfo', {
+                                        initialValue:this.state.book.bookInfo,
                                         rules: [
                                             {
                                                 required: true,
@@ -138,7 +149,7 @@ class DrawerForm extends React.Component {
                             textAlign: 'right',
                         }}
                     >
-                        <Button onClick={this.onClose} type="primary">提交 </Button>
+                        <Button onClick={this.onClose} type="primary">{this.state.submit} </Button>
                         <Button onClick={this.onClose} style={{ marginRight: 8 }}>取消</Button>
 
                     </div>
@@ -197,7 +208,7 @@ const columns = [
         key: 'action',
         render: (text, record) => (
             <div>
-                <App bookId={record.bookId} history={text.history} />
+                <App bookId={record.bookId} book={record} />
             </div>
         ),
     },
