@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 const logger = log4js.getLogger();
 const config = require('../config/config.js');
-
+const borrowRouter = require('./routers/BorrowRouter');
 const bookRouter = require('./routers/BookRouter');
 const userRouter = require('./routers/UserRouter');
 
@@ -54,6 +54,7 @@ app.use(express.static(path.join(__dirname, '/../build')));
 // Configure controller router
 app.use('/book',bookRouter);  // Express Middleware
 app.use('/user',userRouter);
+app.use('/borrow',borrowRouter);
 // Send resource
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/../build', 'index.html'));

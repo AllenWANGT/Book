@@ -2,15 +2,91 @@ import React, { Component } from 'react'
 import {
   Form,
   Input,
+  Tooltip,
+  Icon,
+  Cascader,
   Select,
+  Row,
+  Col,
+  Checkbox,
   Button,
   AutoComplete,
 } from 'antd';
+import { Radio } from 'antd';
+let sex = 0;
+const changeSex = (sex1) => {
+  sex = sex1;
+}
+
+class App extends React.Component {
+  state = {
+    value: 1,
+  };
+
+  onChange = e => {
+    console.log('radio checked', e.target.value);
+    this.setState({
+      value: e.target.value,
+    });
+  };
+
+  render() {
+    const sex2 = this.state.value;
+    changeSex(sex2);
+    return (
+      <Radio.Group onChange={this.onChange} value={this.state.value}>
+        <Radio value={1}>男</Radio>
+        <Radio value={2}>女</Radio>
+      </Radio.Group>
+    );
+  }
+}
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
-const axios = require('axios');
 
+const residences = [
+  {
+    value: '浙江',
+    label: '浙江',
+    children: [
+      {
+        value: '杭州',
+        label: '杭州',
+        children: [
+          {
+            value: '西湖',
+            label: '西湖',
+          },
+        ],
+      },{
+        value: '温州',
+        label: '温州',
+        children: [{
+          value: '西湖',
+          label: '西湖',
+        }
+        ],
+      }
+    ],
+  },
+  {
+    value: '江苏',
+    label: '江苏',
+    children: [
+      {
+        value: '南通',
+        label: '南通',
+        children: [
+          {
+            value: '狼山',
+            label: '狼山',
+          },
+        ],
+      },
+    ],
+  },
+];
 
 class RegistrationForm extends React.Component {
   state = {
@@ -32,12 +108,32 @@ class RegistrationForm extends React.Component {
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
 
+  compareToFirstPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  };
 
-  cancel = () => {
-    axios.get('http://localhost:3000/book').then((data) => {
+  validateToNextPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['confirm'], { force: true });
+    }
+    callback();
+  };
 
-    })
-  }
+  handleWebsiteChange = value => {
+    let autoCompleteResult;
+    if (!value) {
+      autoCompleteResult = [];
+    } else {
+      autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
+    }
+    this.setState({ autoCompleteResult });
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -45,12 +141,12 @@ class RegistrationForm extends React.Component {
 
     const formItemLayout = {
       labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
+        xs: { span: 26 },
+        sm: { span: 9 },
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
+        xs: { span: 4 },
+        sm: { span: 4 },
       },
     };
     const tailFormItemLayout = {
@@ -65,14 +161,7 @@ class RegistrationForm extends React.Component {
         },
       },
     };
-    const prefixSelector = getFieldDecorator('prefix', {
-      initialValue: '86',
-    })(
-      <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>,
-    );
+    
 
     const websiteOptions = autoCompleteResult.map(website => (
       <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
@@ -80,98 +169,95 @@ class RegistrationForm extends React.Component {
 
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-        <Form.Item label="用户名">
-          {getFieldDecorator('user_name', {
+        <Form.Item label="账号">
+          {getFieldDecorator('id', {
             rules: [
               {
-                type: 'user_name',
-                message: '书名不能为空！',
-              },
-              {
                 required: true,
-                message: '书名不能为空！',
+                message: '请输入账号！',
               },
             ],
-          })(<Input />)}
+          })(<Input ></Input>)}
+        </Form.Item>
+        <Form.Item label="密码" hasFeedback>
+          {getFieldDecorator('password', {
+            rules: [
+              {
+                required: true,
+                message: '请输入密码!',
+              },
+              {
+                validator: this.validateToNextPassword,
+              },
+            ],
+          })(<Input.Password />)}
+        </Form.Item>
+        <Form.Item label="确认密码" hasFeedback>
+          {getFieldDecorator('confirm', {
+            rules: [
+              {
+                required: true,
+                message: '请确认密码!',
+              },
+              {
+                validator: this.compareToFirstPassword,
+              },
+            ],
+          })(<Input.Password onBlur={this.handleConfirmBlur} />)}
         </Form.Item>
         <Form.Item label="性别">
-          {getFieldDecorator('user_sex', {
-            rules: [
-              {
-                type: 'user_sex',
-                message: 'The input is not valid E-mail!',
-              },
-              {
-                required: true,
-                message: 'Please input your E-mail!',
-              },
-            ],
-          })(<Input />)}
+          {getFieldDecorator('sex')(
+            <Radio.Group>
+              <Radio value="男">男</Radio>
+              <Radio value="女">女</Radio>
+            </Radio.Group>,
+          )}
         </Form.Item>
-        <Form.Item label="年龄">
-          {getFieldDecorator('user_age', {
+        <Form.Item label="姓名">
+          {getFieldDecorator('name', {
             rules: [
               {
-                type: 'user_age',
-                message: 'The input is not valid E-mail!',
-              },
-              {
                 required: true,
-                message: 'Please input your E-mail!',
+                message: '请输入姓名!',
               },
             ],
-          })(<Input />)}
+          })(<Input ></Input>)}
         </Form.Item>
-        <Form.Item label="地址">
-          {getFieldDecorator('user_address', {
+        <Form.Item label="住址">
+          {getFieldDecorator('address', {
+            initialValue: ['江苏', '南通', '崇川区'],
             rules: [
-              {
-                type: 'user_address',
-                message: 'state',
-              },
-              {
-                required: true,
-                message: 'Please input your state',
-              },
+              { type: 'array', required: true, message: '请输入地址!' },
             ],
-          })(<Input />)}
+          })(<Cascader options={residences} />)}
         </Form.Item>
         <Form.Item label="手机号">
-          {getFieldDecorator('user_phone', {
+          {getFieldDecorator('phone', {
             rules: [
               {
-                type: 'user_phone',
-                message: 'The input is not valid E-mail!',
-              },
-              {
                 required: true,
-                message: 'Please input your E-mail!',
+                message: '请输入手机号!',
               },
             ],
-          })(<Input />)}
-        </Form.Item><Form.Item label="密码">
-          {getFieldDecorator('user_password', {
-            rules: [
-              {
-                type: 'user_password',
-                message: 'The input is not valid E-mail!',
-              },
-              {
-                required: true,
-                message: 'Please input your E-mail!',
-              },
-            ],
-          })(<Input />)}
+          })(<Input ></Input>)}
         </Form.Item>
-
-
-
+       
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">提交</Button>
-          <Button htmlType="cancel" onClick={this.cancel}>取消 </Button>
-          </Form.Item>
-        </Form >
-      );
+          {getFieldDecorator('agreement', {
+            valuePropName: 'checked',
+          })(
+            <Checkbox>
+              I have read the <a href="">agreement</a>
+            </Checkbox>,
+          )}
+        </Form.Item>
+        <Form.Item {...tailFormItemLayout}>
+          <Button type="primary" htmlType="submit">
+            Register
+            </Button>
+        </Form.Item>
+      </Form>
+    );
   }
 }
 

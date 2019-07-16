@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { } from 'antd';
-import { Table, Divider, Tag, Button, Input, Form } from 'antd';
-import { Drawer, Col, Row, Select, DatePicker, Icon } from 'antd';
-import Style from './index.css';
+import { Table, Tag, Button, Input, Form } from 'antd';
+import { Drawer, Col, Row, Select, DatePicker} from 'antd';
+import history from 'history'
 //import Mybutton from './MyDrawer.jsx';
 const axios = require('axios');
 
@@ -14,14 +14,16 @@ const deleteBook = (bookId) => {
             bookId: bookId
         }
     }).then(() => {
-        //this.props.history.push('/book')
+        history2.push('/')
         alert("删除成功")
-    }).catch(() => {
-        alert('删除失败')
+        //location.reload()
     })
 };
+let history2 = history;
 
-
+const changeHistory = (history1) => {
+    history2 = history1;
+}
 
 const { Option } = Select;
 class DrawerForm extends React.Component {
@@ -38,14 +40,15 @@ class DrawerForm extends React.Component {
             visible: false,
         });
     };
-
+     
     render() {
         const { getFieldDecorator } = this.props.form;
+
         return (
             <div>
                 <Button type="primary" onClick={this.showDrawer}>编辑</Button>
                 <Button type="dashed" onClick={this.showDrawer}>详情</Button>
-                <Button type="danger" onClick={deleteBook.bind(this,this.props.bookId)}>删除</Button>
+                <Button type="danger" onClick={deleteBook.bind(this, this.props.bookId)}>删除</Button>
                 <Drawer
                     title="编辑"
                     width={720}
@@ -57,8 +60,8 @@ class DrawerForm extends React.Component {
                             <Col span={12}>
                                 <Form.Item label="图书id">
                                     {getFieldDecorator('bookId', {
-                                        rules: [{ required: true, message: 'Please enter user name' }],
-                                    })(<Input placeholder="请输入图书id" />)}
+                                        rules: [{ required: true, message: '请输入图书id' }],
+                                    })(<Input  placeholder="请输入图书id" ></Input>)}
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
@@ -168,6 +171,11 @@ const columns = [
         key: 'bookAuthor',
     },
     {
+        title: '图书出版社',
+        dataIndex: 'bookPublisher',
+        key: 'bookPublisher',
+    },
+    {
         title: '图书状态',
         dataIndex: 'bookStatus',
         key: 'bookStatus',
@@ -189,14 +197,11 @@ const columns = [
         key: 'action',
         render: (text, record) => (
             <div>
-                <App bookId={record.bookId}/>
-
+                <App bookId={record.bookId} history={text.history} />
             </div>
         ),
     },
 ];
-
-
 
 class index extends Component {
     state = {
@@ -206,7 +211,9 @@ class index extends Component {
         axios.get('http://localhost:3005/book/list').then((data) => {
             // console.log(data.data);
             this.setState({
-                data: data.data
+                data: data.data,
+                column: columns,
+                history1: this.props.history
             });
         })
     }
@@ -226,13 +233,21 @@ class index extends Component {
     }
 
 
+
+
+
+
+
     render() {
+        const aa = this.state.history1;
+        changeHistory(aa);
+        console.log(this.state.data)
         return (
             <div>
                 <div className="search">
                     <Search placeholder="请输入图书名称" onSearch={value => this.getBooks(value)} enterButton />
                 </div>
-                <div><Table columns={columns} dataSource={this.state.data} /></div>
+                <div><Table columns={this.state.column} dataSource={this.state.data}/></div>
             </div>
         )
     }

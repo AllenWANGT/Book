@@ -7,8 +7,14 @@ router.get('/list', (request, response) => {
     axios.get('http://localhost:8080/getUsers').then((data) => {
         response.send(data.data);
         //console.log(data.data);
+    })
+});
 
-
+router.get('/login', (request, response) => {
+    // Access BE
+    axios.get('http://localhost:8080/login').then((data) => {
+        response.send(data.data);
+        //console.log(data.data);
     })
 });
 

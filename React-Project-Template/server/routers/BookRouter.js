@@ -27,7 +27,7 @@ router.get('/delete',(request, response)=>{
 
 router.post('/addBook',(request, response)=>{
     const params = request.body;
-    console.log(params);
+    //console.log(params);
     axios.post('http://localhost:8080/addBook',params).then(()=>{
             response.send();
     }).catch(() => {

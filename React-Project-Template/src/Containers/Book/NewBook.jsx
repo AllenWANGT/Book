@@ -27,7 +27,7 @@ class RegistrationForm extends React.Component {
         axios.post('http://localhost:3005/book/addBook',values).then(() => {
         //console.log(0);
         alert('插入成功');
-        this.props.history.push('/book')
+        this.props.history.push('/')
     }).catch(() => {
       //console.log(1);
       alert('插入失败');
@@ -157,7 +157,7 @@ class RegistrationForm extends React.Component {
                 message: 'Please input your E-mail!',
               },
             ],
-          })(<Input />)}
+          })(<Input.TextArea rows={4} />)}
         </Form.Item>
         
 

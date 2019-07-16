@@ -1,28 +1,39 @@
 import React, { Component } from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import style from "./signin.css";
-
 const axios = require('axios');
+
 class NormalLoginForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+
+                axios.get('http://localhost:3005/user/login', {
+                    params: {
+                        userId: values.userId,
+                        userPassword:values.userPassword
+                    }
+                }).then((data) => {
+                    //console.log(data.data);
+                    this.setState({
+                        data: data.data
+                    });
+                })
+
+
+                this.props.history.push("/admin");
             }
         });
     };
     
-    toAdmin= () =>{
-       this.props.history.push("/admin");
-    }
-
+  
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
-                    {getFieldDecorator('username', {
+                    {getFieldDecorator('userId', {
                         rules: [{ required: true, message: '请输入您的用户名!' }],
                     })(
                         <Input
@@ -32,7 +43,7 @@ class NormalLoginForm extends React.Component {
                     )}
                 </Form.Item>
                 <Form.Item>
-                    {getFieldDecorator('password', {
+                    {getFieldDecorator('userPassword', {
                         rules: [{ required: true, message: '请输入您的密码!' }],
                     })(
                         <Input
@@ -50,7 +61,7 @@ class NormalLoginForm extends React.Component {
                     <a className="login-form-forgot" href="">
                         忘记密码
             </a>
-                    <div><Button type="primary" htmlType="submit" className="login-form-button" onClick={this.toAdmin}>登录</Button></div>
+                    <div><Button type="primary" htmlType="submit" className="login-form-button" >登录</Button></div>
                     <a href="">没有账号，现在就去注册...</a>
                 </Form.Item>
             </Form>
