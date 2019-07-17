@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 const axios = require('axios');
+import signin from "./signin.css";
 
 class NormalLoginForm extends React.Component {
     handleSubmit = e => {
@@ -9,25 +10,46 @@ class NormalLoginForm extends React.Component {
             if (!err) {
                 console.log('Received values of form: ', values);
 
-                axios.get('http://localhost:3005/user/login', {
-                    params: {
-                        userId: values.userId,
-                        userPassword:values.userPassword
-                    }
+                axios.post('http://localhost:3005/user/login', {
+                    userId: values.userId,
+                    userPassword: values.userPassword
                 }).then((data) => {
                     //console.log(data.data);
-                    this.setState({
-                        data: data.data
-                    });
+                    //console.log(data.data.userRole);
+                    if (data.data) {
+                        if(data.data.userRole==1){
+                            this.props.history.push({
+                                pathname: "/admin", state: {
+                                    show1: 'none',
+                                    show2: 'menu',
+                                    show3: 'none',
+                                }
+                            });
+                        }else if(data.data.userRole==2){
+                            this.props.history.push({
+                                pathname: "/admin", state: {
+                                    show1: 'menu',
+                                    show2: 'none',
+                                    show3: 'none'
+                                }
+                            });
+                        }else{
+                            this.props.history.push({
+                                pathname: "/admin", state: {
+                                    show1: 'none',
+                                    show2: 'none',
+                                    show3: 'menu'
+                                }
+                            });
+                        }
+                       
+                    } else {
+                        alert('登录失败')
+                    }
                 })
-
-
-                this.props.history.push("/admin");
             }
         });
     };
-    
-  
     render() {
         const { getFieldDecorator } = this.props.form;
         return (

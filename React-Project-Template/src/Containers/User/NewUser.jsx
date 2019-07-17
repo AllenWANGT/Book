@@ -1,18 +1,7 @@
 import React, { Component } from 'react'
-import {
-  Form,
-  Input,
-  Tooltip,
-  Icon,
-  Cascader,
-  Select,
-  Row,
-  Col,
-  Checkbox,
-  Button,
-  AutoComplete,
-} from 'antd';
+import {Form,Input,Tooltip,Icon,Cascader, Select,Row,Col,Checkbox,Button,AutoComplete,} from 'antd';
 import { Radio } from 'antd';
+const axios = require('axios');
 let sex = 0;
 const changeSex = (sex1) => {
   sex = sex1;
@@ -45,48 +34,7 @@ class App extends React.Component {
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
 
-const residences = [
-  {
-    value: '浙江',
-    label: '浙江',
-    children: [
-      {
-        value: '杭州',
-        label: '杭州',
-        children: [
-          {
-            value: '西湖',
-            label: '西湖',
-          },
-        ],
-      },{
-        value: '温州',
-        label: '温州',
-        children: [{
-          value: '西湖',
-          label: '西湖',
-        }
-        ],
-      }
-    ],
-  },
-  {
-    value: '江苏',
-    label: '江苏',
-    children: [
-      {
-        value: '南通',
-        label: '南通',
-        children: [
-          {
-            value: '狼山',
-            label: '狼山',
-          },
-        ],
-      },
-    ],
-  },
-];
+
 
 class RegistrationForm extends React.Component {
   state = {
@@ -99,6 +47,11 @@ class RegistrationForm extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        axios.post('http://localhost:3005/user/addUser',values).then((data) => {
+          alert('添加用户成功');
+          this.props.history.push('/user');
+      })
+
       }
     });
   };
@@ -233,13 +186,15 @@ class RegistrationForm extends React.Component {
             ],
           })(<Input ></Input>)}
         </Form.Item>
-        <Form.Item label="住址">
+        <Form.Item label="地址">
           {getFieldDecorator('address', {
-            initialValue: ['江苏', '南通', '崇川区'],
             rules: [
-              { type: 'array', required: true, message: '请输入地址!' },
+              {
+                required: true,
+                message: '请输入地址!',
+              },
             ],
-          })(<Cascader options={residences} />)}
+          })(<Input ></Input>)}
         </Form.Item>
         <Form.Item label="手机号">
           {getFieldDecorator('phone', {
@@ -263,7 +218,7 @@ class RegistrationForm extends React.Component {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">
-            Register
+            创建用户
             </Button>
         </Form.Item>
       </Form>
@@ -277,7 +232,7 @@ class Index extends Component {
   render() {
     return (
       <div>
-        <div><WrappedRegistrationForm></WrappedRegistrationForm></div>
+        <div><WrappedRegistrationForm history={this.props.history}></WrappedRegistrationForm></div>
       </div>
     )
   }

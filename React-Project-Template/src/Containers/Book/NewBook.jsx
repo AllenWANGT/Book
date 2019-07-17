@@ -57,7 +57,6 @@ class RegistrationForm extends React.Component {
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
 
-
   cancel = () => {
     axios.get('http://localhost:3000/book').then((data) => {
 
@@ -108,7 +107,6 @@ class RegistrationForm extends React.Component {
         <Form.Item label="书名">
           {getFieldDecorator('bookName', {
             rules: [
-
               {
                 required: true,
                 message: '书名不能为空！',
@@ -122,7 +120,7 @@ class RegistrationForm extends React.Component {
 
               {
                 required: true,
-                message: 'Please input your E-mail!',
+                message: '作者不能为空！',
               },
             ],
           })(<Input />)}
@@ -133,7 +131,7 @@ class RegistrationForm extends React.Component {
 
               {
                 required: true,
-                message: 'Please input your E-mail!',
+                message: 'ISBN不能为空！',
               },
             ],
           })(<Input />)}
@@ -144,23 +142,23 @@ class RegistrationForm extends React.Component {
 
               {
                 required: true,
-                message: 'Please input your E-mail!',
+                message: '出版社不能为空！',
               },
             ],
           })(<Input />)}
-        </Form.Item><Form.Item label="图书概要">
+        </Form.Item>
+        <Form.Item label="图书概要">
           {getFieldDecorator('bookInfo', {
             rules: [
 
               {
                 required: true,
-                message: 'Please input your E-mail!',
+                message: '图书概要不能为空！',
               },
             ],
           })(<Input.TextArea rows={4} />)}
         </Form.Item>
         
-
 
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit" >提交</Button>

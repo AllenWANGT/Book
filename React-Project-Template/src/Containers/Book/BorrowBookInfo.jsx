@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { } from 'antd';
 import { Table, Divider, Tag, Button, Input } from 'antd';
 import Style from './index.css'
-const axios = require('axios');
+
 import history from 'history'
+import { Alert } from 'antd';
+const axios = require('axios');
 const { Search } = Input;
 let history2 = history;
 
@@ -20,7 +22,7 @@ const agreeBorrow = (userId,bookId,borrowState) => {
             borrowState:borrowState
         }
     }).then((data) => {
-        history2.push('/');
+        history2.push('/borrow');
         alert('审核通过');        
     })
 }

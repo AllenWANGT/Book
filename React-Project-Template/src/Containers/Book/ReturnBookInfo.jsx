@@ -20,7 +20,7 @@ const agreeBorrow = (userId,bookId,borrowState) => {
             borrowState:borrowState
         }
     }).then((data) => {
-        history2.push('/');
+        history2.push('/borrow');
         alert('审核通过');        
     })
 }

@@ -34,6 +34,17 @@ router.post('/addBook',(request, response)=>{
         response.send();
     })
     });
+
+    // router.post('/updateBook',(request, response)=>{
+    //     const params = request.body;
+    //     //console.log(params);
+    //     axios.post('http://localhost:8080/updateBook',params).then(()=>{
+    //             response.send();
+    //     }).catch(() => {
+    //         response.send();
+    //         //console.log(1);
+    //     })
+    //     });
 // router.post('/update',(request, response)=>{
 //     axios.post('http://localhost:3000/book/new').then(()=>{
 //     })

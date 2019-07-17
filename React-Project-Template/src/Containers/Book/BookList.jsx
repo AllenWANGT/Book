@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { } from 'antd';
 import { Table, Tag, Button, Input, Form } from 'antd';
-import { Drawer, Col, Row, Select, DatePicker} from 'antd';
-import history from 'history'
+import { Drawer, Col, Row, Select, DatePicker } from 'antd';
+import history from 'history';
 //import Mybutton from './MyDrawer.jsx';
 const axios = require('axios');
 
@@ -27,27 +27,53 @@ const changeHistory = (history1) => {
 
 const { Option } = Select;
 class DrawerForm extends React.Component {
-    state = { 
-        visible: false ,
-        book:this.props.book,
-        submit:"提交",
-        bookstate:"未借"
+    state = {
+        visible: false,
+        book: this.props.book,
+        submit: "提交",
+        bookstate: "未借"
+    };
+    // handleSubmit = e => {
+    //     e.preventDefault();
+    //     this.props.form.validateFieldsAndScroll((err, values) => {
+    //       if (!err) {
+    //         console.log('Received values of form: ', values);
+    //         axios.post('http://localhost:3005/book/updateBook',values).then(() => {
+    //         //console.log(0);
+    //         alert('提交成功');
+    //         this.props.history.push('/admin')
+    //     }).catch(() => {
+    //       //console.log(1);
+    //       alert('提交失败');
+    //     })
+    //       }
+    //     });
+    //   };
+    handleConfirmBlur = e => {
+        const { value } = e.target;
+        this.setState({ confirmDirty: this.state.confirmDirty || !!value });
     };
 
+
+    cancel = () => {
+        axios.get('http://localhost:3000/book').then((data) => {
+
+        })
+    }
     showDrawer = () => {
         this.setState({
             visible: true,
-            submit:"确认"
+            submit: "确认"
         });
     };
 
     onClose = () => {
         this.setState({
             visible: false,
-            submit:"提交"
+            submit: "提交"
         });
     };
-     
+
     render() {
         const { getFieldDecorator } = this.props.form;
 
@@ -67,15 +93,17 @@ class DrawerForm extends React.Component {
                             <Col span={12}>
                                 <Form.Item label="图书id">
                                     {getFieldDecorator('bookId', {
-                                        initialValue:this.state.book.bookId,
+                                        initialValue: this.state.book.bookId,
                                         rules: [{ required: true, message: '请输入图书id' }],
-                                    })(<Input  placeholder="请输入图书id" ></Input>)}
+                                    })(<Input placeholder="请输入图书id" ></Input>)}
+
+
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item label="书名">
                                     {getFieldDecorator('bookName', {
-                                        initialValue:this.state.book.bookName,
+                                        initialValue: this.state.book.bookName,
                                         rules: [{ required: true, message: 'Please enter user name' }],
                                     })(<Input placeholder="请输入书名" />)}
                                 </Form.Item>
@@ -85,15 +113,15 @@ class DrawerForm extends React.Component {
                             <Col span={12}>
                                 <Form.Item label="ISBN">
                                     {getFieldDecorator('bookIsbn', {
-                                        initialValue:this.state.book.bookIsbn,
+                                        initialValue: this.state.book.bookIsbn,
                                         rules: [{ required: true, message: 'Please enter user name' }],
-                                    })(<Input placeholder="请输入图书ISBN"  />)}
+                                    })(<Input placeholder="请输入图书ISBN" />)}
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item label="作者">
                                     {getFieldDecorator('bookAuthor', {
-                                        initialValue:this.state.book.bookAuthor,
+                                        initialValue: this.state.book.bookAuthor,
                                         rules: [{ required: true, message: 'Please enter user name' }],
                                     })(<Input placeholder="请输入图书作者" />)}
                                 </Form.Item>
@@ -104,19 +132,19 @@ class DrawerForm extends React.Component {
                             <Col span={12}>
                                 <Form.Item label="状态">
                                     {getFieldDecorator('bookStatus', {
-                                         //initialValue:
-                                        rules: [{ required: true, message: 'Please enter user name' }],
+                                        //initialValue:
+                                        rules: [{ required: true, message: '!!!' }],
                                     })(<Input placeholder="请输入图书状态" />)}
                                 </Form.Item>
                             </Col>
 
                             <Col span={12}>
-                                <Form.Item label="日期">
+                                <Form.Item label="入库日期">
                                     {getFieldDecorator('dateTime', {
-                                        initialValue:this.state.book.bookCreateTime,
+                                        initialValue: this.state.book.bookCreateTime,
                                         rules: [{ required: true, message: 'Please choose the dateTime' }],
-                                    })(<Input placeholder="" disabled={true}/>
-                                        
+                                    })(<Input placeholder="" disabled={true} />
+
                                     )}
                                 </Form.Item>
                             </Col>
@@ -125,7 +153,7 @@ class DrawerForm extends React.Component {
                             <Col span={24}>
                                 <Form.Item label="图书概要">
                                     {getFieldDecorator('bookInfo', {
-                                        initialValue:this.state.book.bookInfo,
+                                        initialValue: this.state.book.bookInfo,
                                         rules: [
                                             {
                                                 required: true,
@@ -220,23 +248,23 @@ class index extends Component {
     }
     componentDidMount() {
         axios.get('http://localhost:3005/book/list').then((data) => {
-            // console.log(data.data);
+             console.log(data.data);
             this.setState({
                 data: data.data,
                 column: columns,
-                history1: this.props.history
+                history1: this.props.history,
             });
         })
     }
 
     getBooks = (value) => {
-        //console.log(value);
+        console.log(value);
         axios.get('http://localhost:3005/book/list', {
             params: {
                 bookName: value,
             }
         }).then((data) => {
-            //console.log(data.data);
+            console.log(data.data);
             this.setState({
                 data: data.data
             });
@@ -252,17 +280,15 @@ class index extends Component {
     render() {
         const aa = this.state.history1;
         changeHistory(aa);
-        console.log(this.state.data)
+        console.log(this.state.data);
         return (
             <div>
                 <div className="search">
                     <Search placeholder="请输入图书名称" onSearch={value => this.getBooks(value)} enterButton />
                 </div>
-                <div><Table columns={this.state.column} dataSource={this.state.data}/></div>
+                <div><Table columns={this.state.column} dataSource={this.state.data} /></div>
             </div>
         )
     }
 }
-
-
 export default index;
