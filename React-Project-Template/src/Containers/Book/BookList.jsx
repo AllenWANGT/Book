@@ -156,17 +156,6 @@ class DrawerForm extends React.Component {
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item label="状态">
-                                    {getFieldDecorator('bookStatus', {
-                                        initialValue:this.state.book.bookStatus,
-                                        // rules: [{ required: true, message: '!!!' }],
-                                    })(<Input placeholder="." />)}
-                                </Form.Item>
-                            </Col>
-                        </Row>
-
-                        <Row gutter={16}>
-                            <Col span={12}>
                                 <Form.Item label="入库日期">
                                     {getFieldDecorator('dateTime', {
                                         initialValue: this.state.book.bookCreateTime,
@@ -176,7 +165,7 @@ class DrawerForm extends React.Component {
                                     )}
                                 </Form.Item>
                             </Col>
-                        </Row>
+                        </Row>   
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item label="图书概要">
@@ -303,7 +292,7 @@ class index extends Component {
          history = this.props.history;
         console.log(this.state.data);
         return (
-            <div className="Image">
+            <div >
                 <div className="search">
                     <Search placeholder="请输入图书名称" onSearch={value => this.getBooks(value)} enterButton />
                 </div>

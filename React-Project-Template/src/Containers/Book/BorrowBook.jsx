@@ -108,12 +108,28 @@ class index extends Component {
         })
     }
 
+    getBooks = (value) => {
+        console.log(value);
+        axios.get('http://localhost:3005/book/list', {
+            params: {
+                bookName: value,
+            }
+        }).then((data) => {
+            //console.log(data.data);
+            if(data.data.state==1){
+                this.setState({
+                    data: data.data.data
+                });
+            }      
+        })
+    }
+
     render() {
         history=this.props.history;
         return (
             <div>
                 <div className="search">
-                    <Search placeholder="请输入图书名称" onSearch={value => console.log(value)} enterButton />
+                    <Search placeholder="请输入图书名称" onSearch={value => this.getBooks(value)} enterButton />
                 </div>
                 <div><Table columns={columns} dataSource={this.state.data}/></div>
             </div>

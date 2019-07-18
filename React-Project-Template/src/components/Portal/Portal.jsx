@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
 import signin from '../../Containers/signin/signin';
 import  mainPage  from './Portal2';
-import createBrowserHistory from 'history'
+import {createBrowserHistory} from 'history'
 const axios = require('axios');
 
 export default class Portal extends Component {

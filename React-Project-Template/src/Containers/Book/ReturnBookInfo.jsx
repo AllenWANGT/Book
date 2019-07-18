@@ -3,13 +3,10 @@ import { } from 'antd';
 import { Table, Divider, Tag, Button, Input } from 'antd';
 import Style from './index.css'
 const axios = require('axios');
-import history from 'history'
 const { Search } = Input;
-let history2 = history;
+let history = 0;
 
-const changeHistory = (history1) => {
-    history2 = history1;
-}
+
 
 const agreeBorrow = (userId,bookId,borrowState) => {
     //console.log(userId,userName,borrowState)
@@ -20,7 +17,7 @@ const agreeBorrow = (userId,bookId,borrowState) => {
             borrowState:borrowState
         }
     }).then((data) => {
-        history2.push('/borrow');
+        history.push('/borrow');
         alert('审核通过');        
     })
 }
@@ -123,8 +120,7 @@ class index extends Component {
     }
 
     render() {
-        const aa = this.state.history1;
-        changeHistory(aa);
+        history = this.state.history1;
         return (
             <div>
                 <div className="search">

@@ -52,7 +52,7 @@ app.use(session({
     resave: false, //强制保存session，即使它没有变化
     saveUninitialized: true, //强制将未初始化的session存储。当新建一个session且未设定属性或值时，它就处于未初始化状态。在设定cookie前，这对于登录验证，减轻服务器存储压力，权限控制是有帮助的，默认为true
     cookie: {
-        maxAge: 50000
+        maxAge: 500000
     },
     rolling: true, //在每次请求时进行设置cookie，将重置cookie过期时间
 }));

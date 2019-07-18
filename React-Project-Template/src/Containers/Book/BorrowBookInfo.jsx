@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import { } from 'antd';
 import { Table, Divider, Tag, Button, Input } from 'antd';
 import Style from './index.css'
-
-import history from 'history'
 import { Alert } from 'antd';
 const axios = require('axios');
 const { Search } = Input;
-let history2 = history;
+let history = 0;
 
-const changeHistory = (history1) => {
-    history2 = history1;
-}
+
 
 const agreeBorrow = (userId,bookId,borrowState) => {
     //console.log(userId,userName,borrowState)
@@ -22,7 +18,7 @@ const agreeBorrow = (userId,bookId,borrowState) => {
             borrowState:borrowState
         }
     }).then((data) => {
-        history2.push('/borrow');
+        history.push('/borrow');
         alert('审核通过');        
     })
 }
@@ -80,7 +76,7 @@ const columns = [
             return(
                 <div>
                     <Button type="primary" disabled={state.status} onClick={agreeBorrow.bind(this,record.userId,record.bookId,1)}>同意</Button>
-                    <Button type="danger" disabled={state.status}>拒绝</Button>
+                    <Button type="danger" disabled={state.status} onClick={refuseBorrow.bind(this,record)}>拒绝</Button>
                 </div>
             )
         },
@@ -88,7 +84,27 @@ const columns = [
 
 
 ];
-
+const refuseBorrow= (value) => {
+    axios.post('http://localhost:3005/borrow/refuse', {
+        bookId: value.bookId,
+        userId:value.userId
+    }).then((data) => {
+        if (data.data.state == 1) {
+            axios.post('http://localhost:3005/book/return', {
+                bookId: value.bookId
+            }).then((data) => {
+                if(data.data.state==1){
+                    alert('操作成功"');
+                    history.push('/borrow')
+                }else{
+                    alert(data.data.message)
+                }
+            })
+        }
+        // alert('操作成功')
+        // history.push('/borrow')
+    })
+}
  
 
 class index extends Component {
@@ -125,8 +141,8 @@ class index extends Component {
     }
 
     render() {
-        const aa = this.state.history1;
-        changeHistory(aa);
+        history = this.state.history1;
+        
         return (
             <div>
                 <div className="search">

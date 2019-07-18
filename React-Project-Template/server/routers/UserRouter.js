@@ -4,7 +4,9 @@ const axios = require('axios');
 
 router.get('/list', (request, response) => {
     // Access BE
-    axios.get('http://localhost:8080/getUsers').then((data) => {
+    const params = request.query;
+    //console.log(params);
+    axios.get('http://localhost:8080/user/getUsers',{params}).then((data) => {
         response.send(data.data);
         //console.log(data.data);
     })
@@ -45,7 +47,16 @@ router.post('/isLogin',(req,res) => {
 router.post('/addUser', (request, response) => {
     // Access BEr
     const params = request.body;
-    axios.post('http://localhost:8080/add/user',params).then((data) => {
+    axios.post('http://localhost:8080/user/add/user',params).then((data) => {
+        response.send(data.data);
+        //console.log(data.data);
+    })
+});
+
+router.post('/addAdmin', (request, response) => {
+    // Access BEr
+    const params = request.body;
+    axios.post('http://localhost:8080/user/add/admin',params).then((data) => {
         response.send(data.data);
         //console.log(data.data);
     })
@@ -54,7 +65,16 @@ router.post('/addUser', (request, response) => {
 router.get('/getAdmin', (request, response) => {
     // Access BEr
     const params = request.query;
-    axios.get('http://localhost:8080/getAdmins',{params}).then((data) => {
+    axios.get('http://localhost:8080/user/getAdmins',{params}).then((data) => {
+        response.send(data.data);
+        //console.log(data.data);
+    })
+});
+
+router.get('/delete', (request, response) => {
+    // Access BEr
+    const params = request.query;
+    axios.get('http://localhost:8080/user/delete/user',{params}).then((data) => {
         response.send(data.data);
         //console.log(data.data);
     })

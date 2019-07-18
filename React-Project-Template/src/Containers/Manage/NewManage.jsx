@@ -46,10 +46,10 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        axios.post('http://localhost:3005/user/addUser',values).then((data) => {
-          alert('添加用户成功');
-          this.props.history.push('/user');
+        //console.log('Received values of form: ', values);
+        axios.post('http://localhost:3005/user/addAdmin',values).then((data) => {
+          alert(data.data.message);
+          this.props.history.push('/admin/manage/list');
       })
 
       }

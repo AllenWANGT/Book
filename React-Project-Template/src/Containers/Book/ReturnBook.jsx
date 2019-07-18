@@ -5,7 +5,7 @@ import Style from './index.css'
 const axios = require('axios');
 
 const { Search } = Input;
-
+let history =0;
 
 
 const columns = [
@@ -60,8 +60,7 @@ const columns = [
            
             return(
                 <div>
-                    <Button type="primary">还书</Button>
-                    <Button type="dashed" >详情</Button>
+                    <Button type="primary" onClick={returnBook.bind(this,record.bookId)}>还书</Button>
                 </div>
             )
         },
@@ -69,6 +68,26 @@ const columns = [
 
 
 ];
+
+const returnBook = (bookId) =>{
+    axios.post('http://localhost:3005/borrow/delete', {
+        bookId: bookId,
+    }).then((data) => {
+        //console.log(data.data);
+        if (data.data.state == 1) {
+            axios.post('http://localhost:3005/book/return', {
+                bookId: bookId
+            }).then((data) => {
+                if(data.data.state==1){
+                    alert(data.data.message);
+                    history.push('/returnBook')
+                }else{
+                    alert(data.data.message)
+                }
+            })
+        }
+    })
+}
 
 
 
@@ -88,12 +107,28 @@ class index extends Component {
             });
         })
     }
+    getBooks = (value) => {
+        console.log(value);
+        axios.get('http://localhost:3005/book/list', {
+            params: {
+                bookName: value,
+            }
+        }).then((data) => {
+            //console.log(data.data);
+            if(data.data.state==1){
+                this.setState({
+                    data: data.data.data
+                });
+            }      
+        })
+    }
 
     render() {
+        history =this.props.history;
         return (
             <div>
                 <div className="search">
-                    <Search placeholder="请输入图书名称" onSearch={value => console.log(value)} enterButton />
+                    <Search placeholder="请输入图书名称" onSearch={value => this.getBooks(value)} enterButton />
                 </div>
                 <div><Table columns={columns} dataSource={this.state.data} /></div>
             </div>

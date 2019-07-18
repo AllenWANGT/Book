@@ -9,7 +9,7 @@ router.get('/list', (request, response) => {
     const params=request.query;
 
     // Access BE
-    axios.get('http://localhost:8080/getBooks',{params}).then((data) => {
+    axios.get('http://localhost:8080/book/getBooks',{params}).then((data) => {
         response.send(data.data);
     })
 });
@@ -18,7 +18,7 @@ router.get('/passBook', (request, response) => {
     const userId=request.session.userId;
     //console.log(userId)
     // Access BE
-    axios.get('http://localhost:8080/get/passBook',{
+    axios.get('http://localhost:8080/book/get/passBook',{
         params:{
             userId:userId
         }
@@ -30,7 +30,7 @@ router.get('/passBook', (request, response) => {
 
 router.get('/delete',(request, response)=>{
     const params = request.query;
-    axios.get('http://localhost:8080/deleteBookById',{params}).then(()=>{
+    axios.get('http://localhost:8080/book/deleteBookById',{params}).then(()=>{
         response.send();
     }).catch(() =>{
         response.send();
@@ -41,7 +41,7 @@ router.get('/delete',(request, response)=>{
 router.post('/addBook',(request, response)=>{
     const params = request.body;
     //console.log(params);
-    axios.post('http://localhost:8080/addBook',params).then(()=>{
+    axios.post('http://localhost:8080/book/addBook',params).then(()=>{
             response.send();
     }).catch(() => {
         response.send();
@@ -51,7 +51,7 @@ router.post('/addBook',(request, response)=>{
     router.post('/updateBook',(request, response)=>{
         const params = request.body;
         //console.log(params);
-        axios.post('http://localhost:8080/updateBook',params).then(()=>{
+        axios.post('http://localhost:8080/book/updateBook',params).then(()=>{
                 response.send();
         }).catch(() => {
             response.send();
@@ -67,7 +67,7 @@ router.post('/borrow',(request, response)=>{
     const bookId = request.body.bookId;
     //console.log(bookId)
     //console.log(params);
-    axios.get('http://localhost:8080/borrowBook',{
+    axios.get('http://localhost:8080/book/borrowBook',{
         params:{
             bookId:bookId
         }
@@ -76,7 +76,22 @@ router.post('/borrow',(request, response)=>{
     }).catch(() => {
         response.send();
     })
-    });
+});
+
+router.post('/return',(request, response)=>{
+    const bookId = request.body.bookId;
+    //console.log(bookId)
+    //console.log(params);
+    axios.get('http://localhost:8080/book/returnBook',{
+        params:{
+            bookId:bookId
+        }
+    }).then((data)=>{
+            response.send(data.data);
+    }).catch((data) => {
+        response.send(data.data);
+    })
+});
 
 
 module.exports = router;

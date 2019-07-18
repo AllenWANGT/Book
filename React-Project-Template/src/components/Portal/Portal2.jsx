@@ -12,7 +12,7 @@ import BorrowBookInfo from '../../Containers/Book/BorrowBookInfo';
 import ReturnBookInfo from '../../Containers/Book/ReturnBookInfo';
 import Style from './index.module.scss';
 import { Layout, Menu, Dropdown, Icon } from 'antd';
-import createBrowserHistory from 'history'
+import {createBrowserHistory} from 'history'
 // const menu = (
 //     <Menu>
 //         <Menu.Item>
@@ -97,7 +97,6 @@ export default class Portal extends Component {
                                     <Menu.Item key="2" style={{ display: show1 }}> <NavLink to="/admin/book/new">新增图书</NavLink></Menu.Item>
                                     <Menu.Item key="3" style={{ display: show1 }}><NavLink to="/admin/student" >用户管理</NavLink></Menu.Item>
                                     <Menu.Item key="4" style={{ display: show1 }}><NavLink to="/admin/book/borrowInfo">借书审批</NavLink></Menu.Item>
-                                    <Menu.Item key="5" style={{ display: show1 }}><NavLink to="/admin/book/returnInfo">还书审批</NavLink></Menu.Item>
                                     <Menu.Item key="6" style={{ display: show1 }}><NavLink to="/admin/student/new">新增用户</NavLink></Menu.Item>
                                     <Menu.Item key="7" style={{ display: show2 }}><NavLink to="/admin/book/borrow" >借书</NavLink></Menu.Item>
                                     <Menu.Item key="8" style={{ display: show2 }}><NavLink to="/admin/book/return" >还书</NavLink></Menu.Item>
@@ -111,6 +110,8 @@ export default class Portal extends Component {
                                     <Redirect exact from="/borrow" to="/admin/book/borrowInfo" />
                                     <Redirect exact from="/user" to="/admin/student" />
                                     <Redirect exact from="/borrowBook" to="/admin/book/borrow" />
+                                    <Redirect exact from="/returnBook" to="/admin/book/return" />
+                                    <Redirect exact from="/admins" to="/admin/manage/list" />
                                     <Route exact path="/admin/book" component={BookList} />
                                     <Route exact path="/admin/book/new" component={NewBook} />
                                     <Route exact path="/admin/student" component={UserForm} />
