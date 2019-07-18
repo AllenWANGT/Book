@@ -22,4 +22,20 @@ router.get('/update', (request, response) => {
     response.send();
     })
 }); 
+
+router.post('/create', (request, response) => {
+    // Access BE
+    //console.log(request.body);
+    //console.log(request.session.userId)
+    const userId=request.session.userId;
+    const bookId = request.body.bookId;
+    //console.log(bookId);
+    axios.post('http://localhost:8080/createBorrow',{
+        bookId:bookId,
+        userId:userId
+    }).then((data) => {
+    //console.log(data.data)
+    response.send(data.data);
+    })
+}); 
 module.exports = router;

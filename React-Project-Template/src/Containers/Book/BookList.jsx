@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { } from 'antd';
 import { Table, Tag, Button, Input, Form } from 'antd';
 import { Drawer, Col, Row, Select, DatePicker } from 'antd';
-import history from 'history';
+
+
 //import Mybutton from './MyDrawer.jsx';
 const axios = require('axios');
 
@@ -14,16 +15,14 @@ const deleteBook = (bookId) => {
             bookId: bookId
         }
     }).then(() => {
-        history2.push('/')
+        history.push('/')
         alert("删除成功")
         //location.reload()
     })
 };
-let history2 = history;
+let history = 0;
 
-const changeHistory = (history1) => {
-    history2 = history1;
-}
+
 
 const { Option } = Select;
 class DrawerForm extends React.Component {
@@ -57,15 +56,37 @@ class DrawerForm extends React.Component {
 
     cancel = () => {
         axios.get('http://localhost:3000/book').then((data) => {
-
+            
         })
     }
+
+
     showDrawer = () => {
+        // this.props.form.validateFields((err, values) => {
+        //     if (!err) {
+        //       console.log('Received values of form: ', values);
+        //     }
+        //   });
         this.setState({
             visible: true,
             submit: "确认"
         });
     };
+
+    onSubmit=()=>{
+         this.props.form.validateFields((err, values) => {
+            if (!err) {
+              console.log('Received values of form: ', values);
+              axios.post('http://localhost:3005/book/updateBook',values).then(() => {
+                    history.push('/')
+              })
+              this.setState({
+                visible: false,
+                submit: "提交"
+            });
+            }
+          });
+    }
 
     onClose = () => {
         this.setState({
@@ -95,16 +116,14 @@ class DrawerForm extends React.Component {
                                     {getFieldDecorator('bookId', {
                                         initialValue: this.state.book.bookId,
                                         rules: [{ required: true, message: '请输入图书id' }],
-                                    })(<Input placeholder="请输入图书id" ></Input>)}
-
-
+                                    })(<Input placeholder="请输入图书id" disabled={true} ></Input>)}
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item label="书名">
                                     {getFieldDecorator('bookName', {
                                         initialValue: this.state.book.bookName,
-                                        rules: [{ required: true, message: 'Please enter user name' }],
+                                        rules: [{ required: true, message: '请输入书面' }],
                                     })(<Input placeholder="请输入书名" />)}
                                 </Form.Item>
                             </Col>
@@ -114,7 +133,7 @@ class DrawerForm extends React.Component {
                                 <Form.Item label="ISBN">
                                     {getFieldDecorator('bookIsbn', {
                                         initialValue: this.state.book.bookIsbn,
-                                        rules: [{ required: true, message: 'Please enter user name' }],
+                                        rules: [{ required: true, message: '请输入图书ISBN' }],
                                     })(<Input placeholder="请输入图书ISBN" />)}
                                 </Form.Item>
                             </Col>
@@ -122,28 +141,37 @@ class DrawerForm extends React.Component {
                                 <Form.Item label="作者">
                                     {getFieldDecorator('bookAuthor', {
                                         initialValue: this.state.book.bookAuthor,
-                                        rules: [{ required: true, message: 'Please enter user name' }],
+                                        rules: [{ required: true, message: '请输入图书作者' }],
                                     })(<Input placeholder="请输入图书作者" />)}
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item label="出版社">
+                                    {getFieldDecorator('bookPublisher', {
+                                        initialValue: this.state.book.bookPublisher,
+                                        rules: [{ required: true, message: '请输入图书出版社' }],
+                                    })(<Input placeholder="请输入图书出版社" />)}
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="状态">
+                                    {getFieldDecorator('bookStatus', {
+                                        initialValue:this.state.book.bookStatus,
+                                        // rules: [{ required: true, message: '!!!' }],
+                                    })(<Input placeholder="." />)}
                                 </Form.Item>
                             </Col>
                         </Row>
 
                         <Row gutter={16}>
                             <Col span={12}>
-                                <Form.Item label="状态">
-                                    {getFieldDecorator('bookStatus', {
-                                        //initialValue:
-                                        rules: [{ required: true, message: '!!!' }],
-                                    })(<Input placeholder="请输入图书状态" />)}
-                                </Form.Item>
-                            </Col>
-
-                            <Col span={12}>
                                 <Form.Item label="入库日期">
                                     {getFieldDecorator('dateTime', {
                                         initialValue: this.state.book.bookCreateTime,
                                         rules: [{ required: true, message: 'Please choose the dateTime' }],
-                                    })(<Input placeholder="" disabled={true} />
+                                    })(<Input  disabled={true}/>
 
                                     )}
                                 </Form.Item>
@@ -177,7 +205,7 @@ class DrawerForm extends React.Component {
                             textAlign: 'right',
                         }}
                     >
-                        <Button onClick={this.onClose} type="primary">{this.state.submit} </Button>
+                        <Button onClick={this.onSubmit} type="primary">{this.state.submit} </Button>
                         <Button onClick={this.onClose} style={{ marginRight: 8 }}>取消</Button>
 
                     </div>
@@ -250,9 +278,7 @@ class index extends Component {
         axios.get('http://localhost:3005/book/list').then((data) => {
              console.log(data.data);
             this.setState({
-                data: data.data,
-                column: columns,
-                history1: this.props.history,
+                data: data.data.data,
             });
         })
     }
@@ -264,29 +290,24 @@ class index extends Component {
                 bookName: value,
             }
         }).then((data) => {
-            console.log(data.data);
-            this.setState({
-                data: data.data
-            });
+            //console.log(data.data);
+            if(data.data.state==1){
+                this.setState({
+                    data: data.data.data
+                });
+            }      
         })
     }
 
-
-
-
-
-
-
     render() {
-        const aa = this.state.history1;
-        changeHistory(aa);
+         history = this.props.history;
         console.log(this.state.data);
         return (
-            <div>
+            <div className="Image">
                 <div className="search">
                     <Search placeholder="请输入图书名称" onSearch={value => this.getBooks(value)} enterButton />
                 </div>
-                <div><Table columns={this.state.column} dataSource={this.state.data} /></div>
+                <div><Table columns={columns} dataSource={this.state.data} /></div>
             </div>
         )
     }

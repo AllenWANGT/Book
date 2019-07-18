@@ -14,6 +14,19 @@ router.get('/list', (request, response) => {
     })
 });
 
+router.get('/passBook', (request, response) => {
+    const userId=request.session.userId;
+    //console.log(userId)
+    // Access BE
+    axios.get('http://localhost:8080/get/passBook',{
+        params:{
+            userId:userId
+        }
+    }).then((data) => {
+        response.send(data.data);
+    })
+});
+
 
 router.get('/delete',(request, response)=>{
     const params = request.query;
@@ -35,21 +48,35 @@ router.post('/addBook',(request, response)=>{
     })
     });
 
-    // router.post('/updateBook',(request, response)=>{
-    //     const params = request.body;
-    //     //console.log(params);
-    //     axios.post('http://localhost:8080/updateBook',params).then(()=>{
-    //             response.send();
-    //     }).catch(() => {
-    //         response.send();
-    //         //console.log(1);
-    //     })
-    //     });
+    router.post('/updateBook',(request, response)=>{
+        const params = request.body;
+        //console.log(params);
+        axios.post('http://localhost:8080/updateBook',params).then(()=>{
+                response.send();
+        }).catch(() => {
+            response.send();
+            //console.log(1);
+        })
+        });
 // router.post('/update',(request, response)=>{
 //     axios.post('http://localhost:3000/book/new').then(()=>{
 //     })
 // }
 // );
+router.post('/borrow',(request, response)=>{
+    const bookId = request.body.bookId;
+    //console.log(bookId)
+    //console.log(params);
+    axios.get('http://localhost:8080/borrowBook',{
+        params:{
+            bookId:bookId
+        }
+    }).then((data)=>{
+            response.send(data.data);
+    }).catch(() => {
+        response.send();
+    })
+    });
 
 
 module.exports = router;

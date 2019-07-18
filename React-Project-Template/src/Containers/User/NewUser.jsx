@@ -45,7 +45,7 @@ class RegistrationForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
+      if (!err) {    
         console.log('Received values of form: ', values);
         axios.post('http://localhost:3005/user/addUser',values).then((data) => {
           alert('添加用户成功');
@@ -218,7 +218,7 @@ class RegistrationForm extends React.Component {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">
-            创建用户
+            Register
             </Button>
         </Form.Item>
       </Form>
@@ -232,7 +232,7 @@ class Index extends Component {
   render() {
     return (
       <div>
-        <div><WrappedRegistrationForm history={this.props.history}></WrappedRegistrationForm></div>
+        <div><WrappedRegistrationForm></WrappedRegistrationForm></div>
       </div>
     )
   }

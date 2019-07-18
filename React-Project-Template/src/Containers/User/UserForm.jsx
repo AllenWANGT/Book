@@ -65,7 +65,7 @@ class Index extends Component {
         axios.get('http://localhost:3005/user/list').then((data) => {
             //console.log(data.data);
             this.setState({
-                data: data.data
+                data: data.data.data
             });
         })
     }

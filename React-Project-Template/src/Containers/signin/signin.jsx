@@ -3,21 +3,23 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 const axios = require('axios');
 import signin from "./signin.css";
 
+
+
 class NormalLoginForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-
+                //console.log('Received values of form: ', values);
+                axios.defaults.withCredentials = true;
                 axios.post('http://localhost:3005/user/login', {
                     userId: values.userId,
                     userPassword: values.userPassword
                 }).then((data) => {
                     //console.log(data.data);
                     //console.log(data.data.userRole);
-                    if (data.data) {
-                        if(data.data.userRole==1){
+                    if (data.data.state == 1) {
+                        if (data.data.data.userRole == 1) {
                             this.props.history.push({
                                 pathname: "/admin", state: {
                                     show1: 'none',
@@ -25,7 +27,7 @@ class NormalLoginForm extends React.Component {
                                     show3: 'none',
                                 }
                             });
-                        }else if(data.data.userRole==2){
+                        } else if (data.data.data.userRole == 2) {
                             this.props.history.push({
                                 pathname: "/admin", state: {
                                     show1: 'menu',
@@ -33,7 +35,7 @@ class NormalLoginForm extends React.Component {
                                     show3: 'none'
                                 }
                             });
-                        }else{
+                        } else {
                             this.props.history.push({
                                 pathname: "/admin", state: {
                                     show1: 'none',
@@ -42,7 +44,7 @@ class NormalLoginForm extends React.Component {
                                 }
                             });
                         }
-                       
+
                     } else {
                         alert('登录失败')
                     }
@@ -96,7 +98,11 @@ class Index extends Component {
 
     render() {
         return (
-            <div><WrappedNormalLoginForm history={this.props.history}></WrappedNormalLoginForm>
+            //style={sectionStyle}
+            <div className="Image">
+                <div className="inImage">
+                    <WrappedNormalLoginForm history={this.props.history}></WrappedNormalLoginForm>
+                </div>
             </div>
         )
     }

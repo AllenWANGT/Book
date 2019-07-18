@@ -102,7 +102,7 @@ class index extends Component {
         axios.get('http://localhost:3005/borrow/list').then((data) => {
             //console.log(data.data);
             this.setState({
-                data: data.data
+                data: data.data.data
             });
         })
     }
@@ -117,7 +117,7 @@ class index extends Component {
             }
         }).then((data) => {
             this.setState({
-                data: data.data
+                data: data.data.data
             });
         })
     }

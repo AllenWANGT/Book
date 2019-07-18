@@ -3,10 +3,14 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-d
 import signin from '../../Containers/signin/signin';
 import  mainPage  from './Portal2';
 import createBrowserHistory from 'history'
-
+const axios = require('axios');
 
 export default class Portal extends Component {
     render() {
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:3005/user/isLogin').then((data) => {
+            //console.log(data.data);
+        })
         return (
             <Router history={createBrowserHistory }>
                 <Switch> 

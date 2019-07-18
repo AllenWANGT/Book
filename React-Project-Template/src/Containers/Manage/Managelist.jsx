@@ -40,11 +40,6 @@ const columns = [
         key: 'phone',
     },
     {
-        title: '借书数量',
-        dataIndex: 'count',
-        key: 'count',
-    },
-    {
         title: '操作',
         key: 'action',
         render: (text, record) => (
@@ -62,10 +57,10 @@ class Index extends Component {
         data: 0
     }
     componentDidMount() {
-        axios.get('http://localhost:3005/user/list').then((data) => {
+        axios.get('http://localhost:3005/user/getAdmin').then((data) => {
             //console.log(data.data);
             this.setState({
-                data: data.data
+                data: data.data.data
             });
         })
     }

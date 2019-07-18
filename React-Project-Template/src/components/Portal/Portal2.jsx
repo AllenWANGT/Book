@@ -10,7 +10,6 @@ import BorrowBook from '../../Containers/Book/BorrowBook';
 import ReturnBook from '../../Containers/Book/ReturnBook';
 import BorrowBookInfo from '../../Containers/Book/BorrowBookInfo';
 import ReturnBookInfo from '../../Containers/Book/ReturnBookInfo';
-import signin from '../../Containers/signin/signin';
 import Style from './index.module.scss';
 import { Layout, Menu, Dropdown, Icon } from 'antd';
 import createBrowserHistory from 'history'
@@ -34,6 +33,8 @@ import createBrowserHistory from 'history'
 //         </Menu.Item>
 //     </Menu>
 // );
+const axios = require('axios');
+//axios.defaults.withCredentials = true;
 const { Header, Content } = Layout;
 let show1 = 'none';
 let show2 = 'none';
@@ -55,6 +56,10 @@ export default class Portal extends Component {
         // show2= this.props.location.state.show2;
         // show3= this.props.location.state.show3;
         // console.log(show2);
+        // axios.defaults.withCredentials = true;
+        // axios.post('http://localhost:3005/user/isLogin').then((data) => {
+        //     //console.log(data.data);
+        // })
     }
 
     render() {
@@ -105,6 +110,7 @@ export default class Portal extends Component {
                                     <Redirect exact from="/" to="/admin/book" />
                                     <Redirect exact from="/borrow" to="/admin/book/borrowInfo" />
                                     <Redirect exact from="/user" to="/admin/student" />
+                                    <Redirect exact from="/borrowBook" to="/admin/book/borrow" />
                                     <Route exact path="/admin/book" component={BookList} />
                                     <Route exact path="/admin/book/new" component={NewBook} />
                                     <Route exact path="/admin/student" component={UserForm} />
@@ -127,7 +133,3 @@ export default class Portal extends Component {
         )
     }
 }
-
-
-
-

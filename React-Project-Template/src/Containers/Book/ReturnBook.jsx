@@ -26,6 +26,11 @@ const columns = [
         key: 'bookAuthor',
     },
     {
+        title: '图书出版社',
+        dataIndex: 'bookPublisher',
+        key: 'bookPublisher',
+    },
+    {
         title: '图书状态',
         dataIndex: 'bookStatus',
         key: 'bookStatus',
@@ -49,13 +54,13 @@ const columns = [
         key: 'action',
         render: (text, record) => {
             
-            const state ={
-                 status : record.bookStatus == 0? false : true,
-            }
+            // const state ={
+            //      status : record.bookStatus == 0? false : true,
+            // }
            
             return(
                 <div>
-                    <Button type="primary" disabled={state.status}>还书</Button>
+                    <Button type="primary">还书</Button>
                     <Button type="dashed" >详情</Button>
                 </div>
             )
@@ -76,10 +81,10 @@ class index extends Component {
 
 
     componentDidMount() {
-        axios.get('http://localhost:3005/book/list').then((data) => {
-            console.log(data.data);
+        axios.get('http://localhost:3005/book/passBook').then((data) => {
+            //console.log(data.data);
             this.setState({
-                data: data.data
+                data: data.data.data
             });
         })
     }
