@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { } from 'antd';
-import { Table, Divider, Tag, Button, Input } from 'antd';
+import { Table, Divider,message, Tag, Button, Input } from 'antd';
 import Style from './index.css'
 const axios = require('axios');
 
@@ -61,7 +61,6 @@ const columns = [
             return (
                 <div>
                     <Button type="primary" disabled={state.status} onClick={borrowBook.bind(this, record.bookId)}>借阅</Button>
-                    <Button type="dashed" >详情</Button>
                 </div>
             )
         },
@@ -79,10 +78,10 @@ const borrowBook = (bookId) => {
                 bookId: bookId
             }).then((data) => {
                 if(data.data.state==1){
-                    alert(data.data.message);
+                    message.success(data.data.message);
                     history.push('/borrowBook')
                 }else{
-                    alert(data.data.message)
+                    message.error(data.data.message)
                 }
             })
         }

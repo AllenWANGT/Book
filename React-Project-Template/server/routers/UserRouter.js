@@ -33,15 +33,11 @@ router.post('/login', (request, response, ) => {
 });
 
 router.post('/isLogin',(req,res) => {
-    // if(req.session.number){
-    //     req.session.number = req.session.number +1;
-    // }else{
-    //     req.session.number = 1;
-    // }
-    // console.log(req.session.number)
-     //console.log(req.session.userId);
-     //res.redirect("http://localhost:3000/")
-    //res.send()
+   if(req.session.userId){
+        res.send('yes')
+   }else{
+       res.redirect('http://localhost:3000');
+   }
 })
 
 router.post('/addUser', (request, response) => {

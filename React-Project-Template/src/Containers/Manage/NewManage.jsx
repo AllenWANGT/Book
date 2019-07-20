@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Form,Input,Tooltip,Icon,Cascader, Select,Row,Col,Checkbox,Button,AutoComplete,} from 'antd';
+import {Form,Input,Tooltip,Icon,Cascader, Select,Row,Col,Checkbox,Button,AutoComplete,message} from 'antd';
 import { Radio } from 'antd';
 const axios = require('axios');
 let sex = 0;
@@ -48,7 +48,7 @@ class RegistrationForm extends React.Component {
       if (!err) {
         //console.log('Received values of form: ', values);
         axios.post('http://localhost:3005/user/addAdmin',values).then((data) => {
-          alert(data.data.message);
+          message.success(data.data.message);
           this.props.history.push('/admin/manage/list');
       })
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { } from 'antd';
-import { Table, Divider, Tag, Button, Input } from 'antd';
+import { Table, Divider, Tag, Button, Input ,message} from 'antd';
 import Style from './index.css'
 import { Alert } from 'antd';
 const axios = require('axios');
@@ -19,7 +19,7 @@ const agreeBorrow = (userId,bookId,borrowState) => {
         }
     }).then((data) => {
         history.push('/borrow');
-        alert('审核通过');        
+        message.success('审核通过');        
     })
 }
 
@@ -94,10 +94,10 @@ const refuseBorrow= (value) => {
                 bookId: value.bookId
             }).then((data) => {
                 if(data.data.state==1){
-                    alert('操作成功"');
+                    message.success('操作成功"');
                     history.push('/borrow')
                 }else{
-                    alert(data.data.message)
+                    message.error(data.data.message)
                 }
             })
         }

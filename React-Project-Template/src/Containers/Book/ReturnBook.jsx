@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { } from 'antd';
-import { Table, Divider, Tag, Button, Input } from 'antd';
+import { Table, Divider, Tag, Button, Input ,message} from 'antd';
 import Style from './index.css'
 const axios = require('axios');
 
@@ -79,10 +79,10 @@ const returnBook = (bookId) =>{
                 bookId: bookId
             }).then((data) => {
                 if(data.data.state==1){
-                    alert(data.data.message);
+                    message.success(data.data.message);
                     history.push('/returnBook')
                 }else{
-                    alert(data.data.message)
+                    message.error(data.data.message)
                 }
             })
         }

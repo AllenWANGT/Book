@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { } from 'antd';
-import { Table,Drawer,Row,Col,Select, Divider, Tag, Button, Input,Form,Label } from 'antd';
+import { Table,Drawer,Row,Col,Select, Divider, Tag, Button, Input,Form,Label ,message} from 'antd';
 //import Style from './index.css'
 
 
@@ -14,7 +14,7 @@ const deleteAdmin = (userId) =>{
         }
     }).then((data) => {
         
-        alert(data.data.message)
+        message.success(data.data.message)
         history.push('/admins')
         //location.reload()
     })

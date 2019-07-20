@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button,message, Checkbox } from 'antd';
 const axios = require('axios');
 import signin from "./signin.css";
 
@@ -46,7 +46,7 @@ class NormalLoginForm extends React.Component {
                         }
 
                     } else {
-                        alert('登录失败')
+                        message.info('登录失败');
                     }
                 })
             }

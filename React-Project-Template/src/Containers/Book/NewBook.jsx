@@ -5,6 +5,7 @@ import {
   Select,
   Button,
   AutoComplete,
+  message
 } from 'antd';
 const { TextArea } = Input;
 const { Option } = Select;
@@ -22,15 +23,15 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        //console.log('Received values of form: ', values);
         
         axios.post('http://localhost:3005/book/addBook',values).then(() => {
         //console.log(0);
-        alert('插入成功');
+        message.success('插入成功');
         this.props.history.push('/')
     }).catch(() => {
       //console.log(1);
-      alert('插入失败');
+      message.info('插入失败');
     })
       }
     });

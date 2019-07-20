@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { } from 'antd';
-import { Table, Tag, Button, Input, Form } from 'antd';
+import { Table, Tag,message, Button, Input, Form } from 'antd';
 import { Drawer, Col, Row, Select, DatePicker } from 'antd';
 
 
@@ -16,7 +16,7 @@ const deleteBook = (bookId) => {
         }
     }).then(() => {
         history.push('/')
-        alert("删除成功")
+        message.info('删除成功')
         //location.reload()
     })
 };
@@ -30,7 +30,7 @@ class DrawerForm extends React.Component {
         visible: false,
         book: this.props.book,
         submit: "提交",
-        bookstate: "未借"
+        show: true
     };
     // handleSubmit = e => {
     //     e.preventDefault();
@@ -69,7 +69,20 @@ class DrawerForm extends React.Component {
         //   });
         this.setState({
             visible: true,
-            submit: "确认"
+            show: false,
+        });
+    };
+
+    
+    showDrawer2 = () => {
+        // this.props.form.validateFields((err, values) => {
+        //     if (!err) {
+        //       console.log('Received values of form: ', values);
+        //     }
+        //   });
+        this.setState({
+            visible: true,
+            show: true,
         });
     };
 
@@ -101,7 +114,7 @@ class DrawerForm extends React.Component {
         return (
             <div>
                 <Button type="primary" onClick={this.showDrawer}>编辑</Button>
-                <Button type="dashed" onClick={this.showDrawer}>详情</Button>
+                <Button type="dashed" onClick={this.showDrawer2}>详情</Button>
                 <Button type="danger" onClick={deleteBook.bind(this, this.props.bookId)}>删除</Button>
                 <Drawer
                     title="图书详情"
@@ -124,7 +137,7 @@ class DrawerForm extends React.Component {
                                     {getFieldDecorator('bookName', {
                                         initialValue: this.state.book.bookName,
                                         rules: [{ required: true, message: '请输入书面' }],
-                                    })(<Input placeholder="请输入书名" />)}
+                                    })(<Input placeholder="请输入书名" disabled={this.state.show}/>)}
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -134,7 +147,7 @@ class DrawerForm extends React.Component {
                                     {getFieldDecorator('bookIsbn', {
                                         initialValue: this.state.book.bookIsbn,
                                         rules: [{ required: true, message: '请输入图书ISBN' }],
-                                    })(<Input placeholder="请输入图书ISBN" />)}
+                                    })(<Input placeholder="请输入图书ISBN" disabled={this.state.show}/>)}
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
@@ -142,7 +155,7 @@ class DrawerForm extends React.Component {
                                     {getFieldDecorator('bookAuthor', {
                                         initialValue: this.state.book.bookAuthor,
                                         rules: [{ required: true, message: '请输入图书作者' }],
-                                    })(<Input placeholder="请输入图书作者" />)}
+                                    })(<Input placeholder="请输入图书作者" disabled={this.state.show}/>)}
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -152,7 +165,7 @@ class DrawerForm extends React.Component {
                                     {getFieldDecorator('bookPublisher', {
                                         initialValue: this.state.book.bookPublisher,
                                         rules: [{ required: true, message: '请输入图书出版社' }],
-                                    })(<Input placeholder="请输入图书出版社" />)}
+                                    })(<Input placeholder="请输入图书出版社" disabled={this.state.show}/>)}
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
@@ -177,7 +190,7 @@ class DrawerForm extends React.Component {
                                                 message: '请输入说明',
                                             },
                                         ],
-                                    })(<Input.TextArea rows={4} placeholder="请输入图书说明" />)}
+                                    })(<Input.TextArea rows={4} placeholder="请输入图书说明" disabled={this.state.show}/>)}
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -194,7 +207,7 @@ class DrawerForm extends React.Component {
                             textAlign: 'right',
                         }}
                     >
-                        <Button onClick={this.onSubmit} type="primary">{this.state.submit} </Button>
+                        <Button onClick={this.onSubmit} type="primary" disabled={this.state.show}>{this.state.submit} </Button>
                         <Button onClick={this.onClose} style={{ marginRight: 8 }}>取消</Button>
 
                     </div>
